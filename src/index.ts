@@ -10,7 +10,16 @@ const imageUrls = [
   "./marek-piwnicki-kDm08xoR56c-unsplash.jpg",
 	"./mateusz-klein-X9EpOqEhxBA-unsplash.jpg",
 	"./marc-wieland-lH3zFaBhT_Q-unsplash.jpg",
-	"./ethan-chan-ZV3VcGHZIlM-unsplash.jpg"
+	"./ethan-chan-ZV3VcGHZIlM-unsplash.jpg",
+	"./cristi-ursea-_FZPIDFlyRI-unsplash.jpg",
+	"./julia-koi-uKqqr61gGJ8-unsplash.jpg",
+	"./masahiro-miyagi-cXJPNhzyWfE-unsplash.jpg",
+	"./sean-boyd-7vTHB7ddXTQ-unsplash.jpg",
+	"./tangerine-newt-q2PMPo8gBBk-unsplash.jpg",
+	"./markus-spiske-203kEfTORcw-unsplash.jpg",
+	"./jonny-gios-JmNBY1QEpvE-unsplash.jpg",
+	"./susan-wilkinson-wo6nIu-_maQ-unsplash.jpg",
+	"./andrew-haimerl-andrewnef-NgYS0emuJQM-unsplash.jpg"
 ];
 
 function main() {
@@ -18,10 +27,10 @@ function main() {
 
 	const marquee3D = new Marquee3D(imageUrls, {
 		canvas: mainCanvas,
-		columnCount: 12,
+		columnCount: 15,
 	  radius: 3,
-	  rowCount: 3,
-	  rowOffset: 0.2,
+	  rowCount: 4,
+	  rowOffset: 0.1,
 		imageOrder: "sequence"
 	})
 
