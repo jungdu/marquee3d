@@ -1,6 +1,7 @@
-import { Mesh, MeshBasicMaterial, PerspectiveCamera, PlaneGeometry, Scene, TextureLoader, WebGLRenderer } from "three";
+import { Group, Mesh, MeshBasicMaterial, PerspectiveCamera, PlaneGeometry, Scene, TextureLoader, WebGLRenderer, Clock } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { getItemPositions, Position3D } from "./marqueePosition";
+import Timer from "./Timer";
 import { getImageIndexInOrder, getImageSize, getRandomImageIndex } from "./utils";
 
 type ImageOrder = "sequence" | "random";
@@ -11,6 +12,7 @@ interface Marquee3DOption {
   rowCount: number,
   rowOffset: number,
   imageOrder: ImageOrder,
+  spinSpeed?: number,
 }
 
 const ROW_HEIGHT = 1;
@@ -20,9 +22,14 @@ export class Marquee3D {
   renderer:WebGLRenderer;
   camera:PerspectiveCamera;
   textureLoader = new TextureLoader();
-
+  timer = new Timer();
+  
+  // Options
   imageOrder: ImageOrder;
   rowCount: number;
+  spinSpeed: number;
+
+  imageGroup = new Group();
 
   constructor(private imageUrls: string[], option: Marquee3DOption){
     const {
@@ -32,10 +39,12 @@ export class Marquee3D {
       rowCount,
       rowOffset,
       imageOrder,
+      spinSpeed,
     } = option;
     
     this.rowCount = rowCount;
     this.imageOrder = imageOrder;
+    this.spinSpeed = spinSpeed || 0;
 
     this.scene = new Scene();
     this.renderer = new WebGLRenderer({
@@ -61,21 +70,15 @@ export class Marquee3D {
         const imageUrl = imageUrls[this.getImageIndex(rowIndex, columnIndex)];
         this.getImagePlane(imageUrl, position).then((plane) => {
           plane.lookAt(0, plane.position.y, 0);
-          this.scene.add(plane);
+          this.imageGroup.add(plane);
         })
       })
     })
+    this.scene.add(this.imageGroup);
 
     new OrbitControls(this.camera, this.renderer.domElement);
     this.renderer.render(this.scene, this.camera)
     this.tick()
-  }
-
-  private tick(){
-    this.renderer.render(this.scene, this.camera);
-    window.requestAnimationFrame(() => {
-      this.tick()
-    });
   }
 
   private getImagePlane(imageUrl: string, position: Position3D){
@@ -112,6 +115,19 @@ export class Marquee3D {
       default:
         throw new Error("Invalid imageOrder type")
     }
+  }
+
+  private spin(){
+    const deltaTime = this.timer.getDeltaTime();
+    this.imageGroup.rotation.y += deltaTime * this.spinSpeed;
+  }
+
+  private tick(){
+    this.renderer.render(this.scene, this.camera);
+    this.spin();
+    window.requestAnimationFrame(() => {
+      this.tick()
+    });
   }
 
   updateSize(width:number, height: number){

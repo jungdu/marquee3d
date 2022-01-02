@@ -28,10 +28,11 @@ function main() {
 	const marquee3D = new Marquee3D(imageUrls, {
 		canvas: mainCanvas,
 		columnCount: 15,
-	  radius: 3,
+	  radius: 2.5,
 	  rowCount: 4,
 	  rowOffset: 0.1,
-		imageOrder: "sequence"
+		imageOrder: "sequence",
+		spinSpeed: 0.3,
 	})
 
 	window.addEventListener('resize', () => {
