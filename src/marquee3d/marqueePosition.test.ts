@@ -92,14 +92,14 @@ describe("marqueePosition", () => {
 
 	describe("getRowPositionYList function", () => {
 		it("Get y positions of rows", () => {
-			expect(getRowPositionYList(2, 100)).toEqual([-100, 0]);
-			expect(getRowPositionYList(5, 100)).toEqual([-250, -150, -50, 50, 150]);
+			expect(getRowPositionYList(2, 100)).toEqual([-50, 50]);
+			expect(getRowPositionYList(5, 100)).toEqual([-200, -100, 0, 100, 200]);
 		});
 
 		it("Get y positions of rows with offset", () => {
-			expect(getRowPositionYList(2, 100, 100)).toEqual([-150, 50]);
+			expect(getRowPositionYList(2, 100, 100)).toEqual([-100, 100]);
 			expect(getRowPositionYList(5, 100, 100)).toEqual([
-				-450, -250, -50, 150, 350,
+				-400, -200, 0, 200, 400,
 			]);
 		});
 	});
@@ -177,10 +177,10 @@ describe("marqueePosition", () => {
 
 			expect(mapPositionValueToInt(result)).toEqual([
 				[
-					[10, -50, 0],
-					[0, -50, 10],
-					[-10, -50, 0],
-					[0, -50, -10],
+					[10, 0, 0],
+					[0, 0, 10],
+					[-10, 0, 0],
+					[0, 0, -10],
 				],
 			]);
 		});
@@ -196,16 +196,16 @@ describe("marqueePosition", () => {
 
 			expect(mapPositionValueToInt(result)).toEqual([
 				[
-					[10, -100, 0],
-					[0, -100, 10],
-					[-10, -100, 0],
-					[0, -100, -10],
+					[10, -50, 0],
+					[0, -50, 10],
+					[-10, -50, 0],
+					[0, -50, -10],
 				],
 				[
-					[7, 0, 7],
-					[-7, 0, 7],
-					[-7, 0, -7],
-					[7, 0, -7],
+					[7, 50, 7],
+					[-7, 50, 7],
+					[-7, 50, -7],
+					[7, 50, -7],
 				],
 			]);
 		});

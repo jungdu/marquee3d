@@ -29,8 +29,8 @@ export function getItemPositions({
 			isEvenRow ? 0 : stepAngle / 2
 		);
 		result[i] = itemPositions.map<Position3D>((position) => {
-      position[YIndex] = rowPositionYList[i];
-      return position
+			position[YIndex] = rowPositionYList[i];
+			return position;
 		});
 	}
 
@@ -48,7 +48,11 @@ export function getRowPositionYList(
 
 	for (let i = 0; i < rowCount; i++) {
 		const positionY =
-			i * rowHeight + Math.max(0, rowOffset * i) - centerPositionY;
+			i * rowHeight +
+			Math.max(0, rowOffset * i) -
+			centerPositionY +
+			rowHeight / 2;
+			
 		result.push(positionY);
 	}
 
