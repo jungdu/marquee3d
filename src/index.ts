@@ -27,13 +27,20 @@ const imageUrls = [
 function main() {
 	const mainCanvas = document.getElementById('mainCanvas') as HTMLCanvasElement;
 
-	new Marquee3D(imageUrls, {
+	const marquee3D = new Marquee3D(imageUrls, {
 		canvas: mainCanvas,
 		columnCount: 12,
 	  radius: 3,
 	  rowCount: 5,
 	  rowOffset: 0.2,
 	  rowHeight: 1,
+	})
+
+	window.addEventListener('resize', () => {
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+
+		marquee3D.updateSize(width, height);
 	})
 }
 

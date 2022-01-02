@@ -33,7 +33,7 @@ export class Marquee3D {
     });
     const {width, height} = canvas.getBoundingClientRect();
 
-    this.camera = new PerspectiveCamera(40, width/height, 0.1, 100);
+    this.camera = new PerspectiveCamera(45, width/height, 0.1, 100);
     this.renderer.setSize(width, height);
 
     this.camera.position.z = 3;
@@ -91,6 +91,13 @@ export class Marquee3D {
 				resolve(plane);
       })
     })
+  }
+
+  updateSize(width:number, height: number){
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(width, height);
   }
 }
 
