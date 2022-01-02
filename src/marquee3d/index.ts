@@ -1,15 +1,19 @@
 import { Mesh, MeshBasicMaterial, PerspectiveCamera, PlaneGeometry, Scene, TextureLoader, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { getItemPositions, Position3D } from "./marqueePosition";
+import { getImageIndexInOrder, getImageSize, getRandomImageIndex } from "./utils";
 
+type ImageOrder = "sequence" | "random";
 interface Marquee3DOption {
   canvas: HTMLCanvasElement,
   columnCount: number,
   radius: number,
   rowCount: number,
   rowOffset: number,
-  rowHeight: number,
+  imageOrder: ImageOrder,
 }
+
+const ROW_HEIGHT = 1;
 
 export class Marquee3D {
   scene:Scene;
@@ -17,15 +21,21 @@ export class Marquee3D {
   camera:PerspectiveCamera;
   textureLoader = new TextureLoader();
 
-  constructor(imageUrls: string[], option: Marquee3DOption){
+  imageOrder: ImageOrder;
+  rowCount: number;
+
+  constructor(private imageUrls: string[], option: Marquee3DOption){
     const {
       canvas,
       columnCount,
       radius,
       rowCount,
       rowOffset,
-      rowHeight,  
+      imageOrder,
     } = option;
+    
+    this.rowCount = rowCount;
+    this.imageOrder = imageOrder;
 
     this.scene = new Scene();
     this.renderer = new WebGLRenderer({
@@ -43,12 +53,12 @@ export class Marquee3D {
       radius,
       rowCount,
       rowOffset,
-      rowHeight,
+      rowHeight: ROW_HEIGHT,
     })
 
-    marqueePositions.forEach((column) => {
-      column.forEach((position) => {
-        const imageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    marqueePositions.forEach((column, rowIndex) => {
+      column.forEach((position, columnIndex) => {
+        const imageUrl = imageUrls[this.getImageIndex(rowIndex, columnIndex)];
         this.getImagePlane(imageUrl, position).then((plane) => {
           plane.lookAt(0, plane.position.y, 0);
           this.scene.add(plane);
@@ -93,32 +103,21 @@ export class Marquee3D {
     })
   }
 
+  private getImageIndex(rowIndex: number, columnIndex: number):number{
+    switch(this.imageOrder){
+      case "sequence":
+        return getImageIndexInOrder(this.imageUrls.length, this.rowCount, rowIndex, columnIndex);
+      case "random":
+        return getRandomImageIndex(this.imageUrls.length);
+      default:
+        throw new Error("Invalid imageOrder type")
+    }
+  }
+
   updateSize(width:number, height: number){
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
-  }
-}
-
-function getImageSize(ratio: number){
-  const maxWidth = 1;
-  const maxHeight = 1;
-  
-  if(ratio === 1){
-    return {
-      width: maxWidth,
-      height: maxHeight,
-    }
-  }
-  if(ratio > 1){
-    return {
-      width: maxWidth,
-      height: maxWidth / ratio
-    }
-  }
-  return {
-    width: maxHeight * ratio,
-    height: maxHeight,
   }
 }

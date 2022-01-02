@@ -1,14 +1,3 @@
-import {
-	Mesh,
-	TextureLoader,
-	MeshBasicMaterial,
-	PerspectiveCamera,
-	PlaneGeometry,
-	Scene,
-	WebGLRenderer,
-} from "three";
-import { getItemPositions, Position3D } from "./Marquee3D/marqueePosition";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Marquee3D } from "./Marquee3D";
 
 const imageUrls = [
@@ -31,9 +20,9 @@ function main() {
 		canvas: mainCanvas,
 		columnCount: 12,
 	  radius: 3,
-	  rowCount: 5,
+	  rowCount: 3,
 	  rowOffset: 0.2,
-	  rowHeight: 1,
+		imageOrder: "sequence"
 	})
 
 	window.addEventListener('resize', () => {

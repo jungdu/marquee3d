@@ -53,10 +53,6 @@ describe("marqueePosition", () => {
 
 		it("Get position when angle is 270°", () => {
 			const angle = (Math.PI * 3) / 2;
-			console.log(
-				"mapFloatToInt(getItemPositionInCircle(angle, 1)) :",
-				mapFloatToInt(getItemPositionInCircle(angle, 1))
-			);
 			expect(mapFloatToInt(getItemPositionInCircle(angle, 1))).toEqual([
 				0, 0, -1,
 			]);
